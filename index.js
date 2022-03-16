@@ -4,15 +4,12 @@ const list = document.querySelector(".list")
 
 const likeButtons = document.querySelectorAll(".list");
 
-likeButtons.forEach(like=>{
-    like.addEventListener("click", () =>{
-
-    })
-})
-console.log(likeButtons)
-
-addButton.addEventListener("click", function(){
+function addItem() {
     
+    if(inputText.value.trim() === ""){
+        return;
+    }
+
     // like
     const like = document.createElement("span");
     const likeIcon = document.createElement("i");
@@ -30,8 +27,8 @@ addButton.addEventListener("click", function(){
     const manage = document.createElement("span");
     const checkIcon = document.createElement("i");
     const clearIcon = document.createElement("i");
-    checkIcon.classList.add("material-icons","check");
-    clearIcon.classList.add("material-icons","clear");
+    checkIcon.classList.add("material-icons", "check");
+    clearIcon.classList.add("material-icons", "clear");
     checkIcon.innerText = "check"
     clearIcon.innerText = "clear"
     manage.classList.add("manage")
@@ -39,9 +36,36 @@ addButton.addEventListener("click", function(){
     manage.appendChild(clearIcon)
 
     const li = document.createElement("li");
-    
+
+
+    // event
+    like.addEventListener('click', (e) => {
+        const target = e.target;
+        const text = target.innerText === "favorite" ? "favorite_border" : "favorite";
+        target.innerText = text;
+    })
+    checkIcon.addEventListener('click', (e) => {
+        const target = e.target.parentNode.parentNode;
+        target.classList.add("done")
+    })
+    clearIcon.addEventListener('click', (e) => {
+        const target = e.target.parentNode.parentNode;
+        list.removeChild(target)
+    })
+
     li.appendChild(like)
     li.appendChild(item)
     li.appendChild(manage)
     list.appendChild(li)
+
+    inputText.value = "";
+    inputText.focus();
+}
+
+inputText.addEventListener("keypress", e => {
+    if (e.keyCode === 13) {
+        addItem()
+    }
 })
+
+addButton.addEventListener("click", addItem)
